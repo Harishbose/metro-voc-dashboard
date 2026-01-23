@@ -4,7 +4,7 @@ TROUBLESHOOTING GUIDE:
 If you see "CSV is not found or CSV is empty" error:
 
 1. CHECK CONSOLE (F12 > Console tab):
-   - Look for error messages like "❌ No data records found in CSV"
+   - Look for error messages like "? No data records found in CSV"
    - Check for XLSX conversion errors
 
 2. MOST COMMON ISSUE - ML SENTIMENT API DOWN:
@@ -28,8 +28,8 @@ If you see "CSV is not found or CSV is empty" error:
 
 6. FOR DEVELOPERS:
    - Check console logs - they show detailed loading progress
-   - Look for: ✅ Loaded: filename | ❌ Could not load: filename
-   - Check: 📄 First 300 chars of reviews, 📊 CSV sizes
+   - Look for: ? Loaded: filename | ? Could not load: filename
+   - Check: ?? First 300 chars of reviews, ?? CSV sizes
 -->
 
 <!-- GitHub Configuration for CSV/XLSX Loading -->
@@ -60,7 +60,7 @@ If you see "CSV is not found or CSV is empty" error:
         try {
           const response = await fetch(url);
           if (response.ok) {
-            console.log(`✅ Loaded: ${fullFileName}`);
+            console.log(`? Loaded: ${fullFileName}`);
             if (format === '.csv') {
               return await response.text();
             } else if (format === '.xlsx') {
@@ -85,14 +85,14 @@ If you see "CSV is not found or CSV is empty" error:
       
       // Map mojibake patterns to replacements using Unicode escapes to avoid syntax errors
       // Mojibake emoji patterns (UTF-8 bytes decoded as Latin-1)
-      fixed = fixed.split('\u00f0\u009f\u0098\u0085').join('😅'); // sweat smile
-      fixed = fixed.split('\u00f0\u009f\u0098\u0092').join('😒'); // unamused
-      fixed = fixed.split('\u00f0\u009f\u0098\u0094').join('😔'); // pensive
-      fixed = fixed.split('\u00f0\u009f\u0098\u0095').join('😕'); // confused
-      fixed = fixed.split('\u00f0\u009f\u0098\u00af').join('😯'); // hushed
-      fixed = fixed.split('\u00f0\u009f\u0098\u00a2').join('😢'); // crying
-      fixed = fixed.split('\u00f0\u009f\u0098\u00ad').join('😭'); // loudly crying
-      fixed = fixed.split('\u00f0\u009f\u0091\u008c').join('👌'); // OK hand
+      fixed = fixed.split('\u00f0\u009f\u0098\u0085').join('??'); // sweat smile
+      fixed = fixed.split('\u00f0\u009f\u0098\u0092').join('??'); // unamused
+      fixed = fixed.split('\u00f0\u009f\u0098\u0094').join('??'); // pensive
+      fixed = fixed.split('\u00f0\u009f\u0098\u0095').join('??'); // confused
+      fixed = fixed.split('\u00f0\u009f\u0098\u00af').join('??'); // hushed
+      fixed = fixed.split('\u00f0\u009f\u0098\u00a2').join('??'); // crying
+      fixed = fixed.split('\u00f0\u009f\u0098\u00ad').join('??'); // loudly crying
+      fixed = fixed.split('\u00f0\u009f\u0091\u008c').join('??'); // OK hand
       
       // Text mojibake patterns
       fixed = fixed.split('\u00e2\u0080\u0099').join("'"); // apostrophe
@@ -110,18 +110,18 @@ If you see "CSV is not found or CSV is empty" error:
   function xlsxToCSV(arrayBuffer) {
     try {
       const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
-      console.log('📊 XLSX Workbook loaded. Sheets:', workbook.SheetNames);
+      console.log('?? XLSX Workbook loaded. Sheets:', workbook.SheetNames);
       
       const firstSheetName = workbook.SheetNames[0];
-      console.log('📄 Using sheet:', firstSheetName);
+      console.log('?? Using sheet:', firstSheetName);
       
       const worksheet = workbook.Sheets[firstSheetName];
       const csv = XLSX.utils.sheet_to_csv(worksheet);
       
-      console.log('✅ XLSX converted to CSV. First 200 chars:', csv.substring(0, 200));
+      console.log('? XLSX converted to CSV. First 200 chars:', csv.substring(0, 200));
       return csv;
     } catch (error) {
-      console.error('❌ Error converting XLSX to CSV:', error);
+      console.error('? Error converting XLSX to CSV:', error);
       throw new Error('Failed to convert XLSX file: ' + error.message);
     }
   }
@@ -129,7 +129,7 @@ If you see "CSV is not found or CSV is empty" error:
   async function loadDataFromGitHub() {
     try {
       // Try to load local files first (for local/Render deployment)
-      console.log('📂 Attempting to load local Excel files...');
+      console.log('?? Attempting to load local Excel files...');
       
       try {
         // Try XLSX files first
@@ -150,13 +150,13 @@ If you see "CSV is not found or CSV is empty" error:
           
           // Validate CSV content
           if (!reviewsCSV || reviewsCSV.trim().length === 0 || !storesCSV || storesCSV.trim().length === 0) {
-            console.warn('⚠️ XLSX conversion resulted in empty CSV');
+            console.warn('?? XLSX conversion resulted in empty CSV');
             throw new Error('XLSX to CSV conversion failed - empty result');
           }
           
-          console.log('✅ Local Excel files loaded (reviews.xlsx, stores_master.xlsx)');
-          console.log('📊 Reviews CSV size:', reviewsCSV.length, 'bytes');
-          console.log('📊 Stores CSV size:', storesCSV.length, 'bytes');
+          console.log('? Local Excel files loaded (reviews.xlsx, stores_master.xlsx)');
+          console.log('?? Reviews CSV size:', reviewsCSV.length, 'bytes');
+          console.log('?? Stores CSV size:', storesCSV.length, 'bytes');
           return { 
             reviewsText: reviewsCSV, 
             storesText: storesCSV,
@@ -164,7 +164,7 @@ If you see "CSV is not found or CSV is empty" error:
           };
         }
       } catch (e) {
-        console.log('⚠️ XLSX files error:', e.message);
+        console.log('?? XLSX files error:', e.message);
       }
       
       try {
@@ -180,9 +180,9 @@ If you see "CSV is not found or CSV is empty" error:
             throw new Error('CSV files are empty');
           }
           
-          console.log('✅ Local CSV files loaded (reviews.csv, stores_master.csv)');
-          console.log('📊 Reviews CSV size:', reviewsText.length, 'bytes');
-          console.log('📊 Stores CSV size:', storesText.length, 'bytes');
+          console.log('? Local CSV files loaded (reviews.csv, stores_master.csv)');
+          console.log('?? Reviews CSV size:', reviewsText.length, 'bytes');
+          console.log('?? Stores CSV size:', storesText.length, 'bytes');
           return { 
             reviewsText, 
             storesText,
@@ -190,11 +190,11 @@ If you see "CSV is not found or CSV is empty" error:
           };
         }
       } catch (e) {
-        console.log('⚠️ CSV files error:', e.message);
+        console.log('?? CSV files error:', e.message);
       }
       
       // Fallback to GitHub (if local files not found)
-      console.log('📥 Loading from GitHub (fallback)...');
+      console.log('?? Loading from GitHub (fallback)...');
       const reviewsData = await fetchFromGitHub('reviews');
       const reviewsText = reviewsData.isXlsx 
         ? xlsxToCSV(reviewsData.arrayBuffer)
@@ -213,9 +213,9 @@ If you see "CSV is not found or CSV is empty" error:
         throw new Error('Stores data is empty after loading');
       }
       
-      console.log('✅ GitHub files loaded');
-      console.log('📊 Reviews CSV size:', reviewsText.length, 'bytes');
-      console.log('📊 Stores CSV size:', storesText.length, 'bytes');
+      console.log('? GitHub files loaded');
+      console.log('?? Reviews CSV size:', reviewsText.length, 'bytes');
+      console.log('?? Stores CSV size:', storesText.length, 'bytes');
       return { 
         reviewsText, 
         storesText,
@@ -423,7 +423,7 @@ If you see "CSV is not found or CSV is empty" error:
           });
           return response.ok;
         } catch (error) {
-          console.warn('⚠️ ML API health check failed:', error.message);
+          console.warn('?? ML API health check failed:', error.message);
           return false;
         }
       };
@@ -431,18 +431,18 @@ If you see "CSV is not found or CSV is empty" error:
       // Function to enrich data with ML sentiment
       const enrichWithMLSentiment = async (data) => {
         if (!USE_ML_SENTIMENT) {
-          console.log('⚠️ ML Sentiment disabled - using original sentiment');
+          console.log('?? ML Sentiment disabled - using original sentiment');
           return data;
         }
 
         try {
           setMlSentimentStatus('analyzing');
-          console.log('🤖 Starting ML sentiment analysis on', data.length, 'records...');
+          console.log('?? Starting ML sentiment analysis on', data.length, 'records...');
           
           // Check if ML API is available first
           const isAPIHealthy = await checkMLAPIHealth();
           if (!isAPIHealthy) {
-            console.warn('⚠️ ML API is not available, using original data');
+            console.warn('?? ML API is not available, using original data');
             setMlSentimentStatus('unavailable');
             return data;
           }
@@ -460,7 +460,7 @@ If you see "CSV is not found or CSV is empty" error:
 
           for (let i = 0; i < comments.length; i += batchSize) {
             const batch = comments.slice(i, i + batchSize);
-            console.log(`📊 Analyzing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(comments.length / batchSize)}...`);
+            console.log(`?? Analyzing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(comments.length / batchSize)}...`);
 
             try {
               const controller = new AbortController();
@@ -483,9 +483,9 @@ If you see "CSV is not found or CSV is empty" error:
               allResults.push(...result.results);
             } catch (err) {
               if (err.name === 'AbortError') {
-                console.warn(`⚠️ Batch ${Math.floor(i / batchSize) + 1} timed out after ${timeoutMs}ms`);
+                console.warn(`?? Batch ${Math.floor(i / batchSize) + 1} timed out after ${timeoutMs}ms`);
               } else {
-                console.warn(`⚠️ Batch ${Math.floor(i / batchSize) + 1} failed:`, err.message);
+                console.warn(`?? Batch ${Math.floor(i / batchSize) + 1} failed:`, err.message);
               }
               // On error, add dummy results to maintain index alignment
               batch.forEach(comment => {
@@ -526,14 +526,14 @@ If you see "CSV is not found or CSV is empty" error:
             neutral: enrichedData.filter(r => r.ML_Sentiment === 'NEUTRAL').length
           };
 
-          console.log('✅ ML Sentiment analysis complete!');
-          console.log('📈 Distribution:', `Positive: ${stats.positive} (${(stats.positive/stats.total*100).toFixed(1)}%), Negative: ${stats.negative} (${(stats.negative/stats.total*100).toFixed(1)}%), Neutral: ${stats.neutral} (${(stats.neutral/stats.total*100).toFixed(1)}%)`);
+          console.log('? ML Sentiment analysis complete!');
+          console.log('?? Distribution:', `Positive: ${stats.positive} (${(stats.positive/stats.total*100).toFixed(1)}%), Negative: ${stats.negative} (${(stats.negative/stats.total*100).toFixed(1)}%), Neutral: ${stats.neutral} (${(stats.neutral/stats.total*100).toFixed(1)}%)`);
           setMlSentimentStatus('completed');
           return enrichedData;
         } catch (error) {
-          console.warn('⚠️ ML Sentiment API unavailable:', error.message);
-          console.log('💡 Make sure to run: python ml_sentiment_api.py');
-          console.log('🔗 API should be at:', ML_SENTIMENT_API_URL);
+          console.warn('?? ML Sentiment API unavailable:', error.message);
+          console.log('?? Make sure to run: python ml_sentiment_api.py');
+          console.log('?? API should be at:', ML_SENTIMENT_API_URL);
           setMlSentimentStatus('unavailable');
           return data; // Return original data without ML sentiment
         }
@@ -545,11 +545,11 @@ If you see "CSV is not found or CSV is empty" error:
           setIsLoading(true);
           setLoadError(null);
           try {
-            console.log('📥 Starting data fetch...');
+            console.log('?? Starting data fetch...');
             const { reviewsText, storesText, source } = await loadDataFromGitHub();
             setDataSource(source);
-            console.log('✅ Data fetched from:', source);
-            console.log('📄 First 300 chars of reviews:', reviewsText.substring(0, 300));
+            console.log('? Data fetched from:', source);
+            console.log('?? First 300 chars of reviews:', reviewsText.substring(0, 300));
             
             // Parse reviews CSV WITHOUT transformHeader
             Papa.parse(reviewsText, {
@@ -557,20 +557,20 @@ If you see "CSV is not found or CSV is empty" error:
               skipEmptyLines: true,
               dynamicTyping: false,
               complete: (results) => {
-                console.log('✅ Reviews parsed. Records:', results.data.length);
+                console.log('? Reviews parsed. Records:', results.data.length);
                 
                 // Validate parsed data
                 if (!results.data || results.data.length === 0) {
-                  console.error('❌ No data records found in CSV');
+                  console.error('? No data records found in CSV');
                   setLoadError('CSV file is empty - no data records found');
                   setIsLoading(false);
                   return;
                 }
                 
-                console.log('📋 Review headers:', Object.keys(results.data[0] || {}));
-                console.log('📝 First review row:', results.data[0]);
-                console.log('❓ Has Customer Response?', 'Customer Response' in (results.data[0] || {}));
-                console.log('❓ Has Sentiment?', 'Sentiment' in (results.data[0] || {}));
+                console.log('?? Review headers:', Object.keys(results.data[0] || {}));
+                console.log('?? First review row:', results.data[0]);
+                console.log('? Has Customer Response?', 'Customer Response' in (results.data[0] || {}));
+                console.log('? Has Sentiment?', 'Sentiment' in (results.data[0] || {}));
                 
                 // Parse stores master for mapping
                 Papa.parse(storesText, {
@@ -578,15 +578,15 @@ If you see "CSV is not found or CSV is empty" error:
                   skipEmptyLines: true,
                   dynamicTyping: false,
                   complete: (storesResults) => {
-                    console.log('✅ Stores parsed. Records:', storesResults.data.length);
+                    console.log('? Stores parsed. Records:', storesResults.data.length);
                     
                     // Validate stores data
                     if (!storesResults.data || storesResults.data.length === 0) {
-                      console.warn('⚠️ Stores data is empty, proceeding with reviews only');
+                      console.warn('?? Stores data is empty, proceeding with reviews only');
                     }
                     
-                    console.log('📋 Store headers:', Object.keys(storesResults.data[0] || {}));
-                    console.log('📝 First store row:', storesResults.data[0]);
+                    console.log('?? Store headers:', Object.keys(storesResults.data[0] || {}));
+                    console.log('?? First store row:', storesResults.data[0]);
                     
                     const result = processAndCleanData(results.data, storesResults.data);
                     const cleanedData = result.data;
@@ -595,24 +595,24 @@ If you see "CSV is not found or CSV is empty" error:
                     // Store the lookup in the ref for global access
                     storeMasterLookupRef.current = storeMasterLookup;
                     
-                    console.log('✅ Data cleaned. Final records:', cleanedData.length);
-                    console.log('✅ Store Master Lookup available:', Object.keys(storeMasterLookup).length, 'stores');
+                    console.log('? Data cleaned. Final records:', cleanedData.length);
+                    console.log('? Store Master Lookup available:', Object.keys(storeMasterLookup).length, 'stores');
                     
                     if (cleanedData.length === 0) {
-                      console.error('❌ No records after cleaning!');
-                      console.log('🔍 Debugging info:');
+                      console.error('? No records after cleaning!');
+                      console.log('?? Debugging info:');
                       console.log('   - Total raw reviews:', results.data.length);
                       console.log('   - Total stores:', storesResults.data.length);
                       console.log('   - First 3 reviews:', results.data.slice(0, 3));
                     } else {
-                      console.log('✅ SUCCESS: Dashboard ready with', cleanedData.length, 'records');
+                      console.log('? SUCCESS: Dashboard ready with', cleanedData.length, 'records');
                       
                       // Enrich with ML sentiment
                       enrichWithMLSentiment(cleanedData).then(enrichedData => {
-                        console.log('✅ ML enrichment completed, setting data:', enrichedData.length, 'records');
+                        console.log('? ML enrichment completed, setting data:', enrichedData.length, 'records');
                         setData(enrichedData);
                       }).catch(err => {
-                        console.warn('⚠️ ML sentiment enrichment failed:', err.message);
+                        console.warn('?? ML sentiment enrichment failed:', err.message);
                         console.log('Using original data without ML sentiment');
                         setData(cleanedData);
                       });
@@ -620,20 +620,20 @@ If you see "CSV is not found or CSV is empty" error:
                     setIsLoading(false);
                   },
                   error: (err) => {
-                    console.error('❌ Error parsing stores master:', err);
+                    console.error('? Error parsing stores master:', err);
                     setLoadError('Failed to parse stores master file');
                     setIsLoading(false);
                   }
                 });
               },
               error: (err) => {
-                console.error('❌ Error parsing reviews:', err);
+                console.error('? Error parsing reviews:', err);
                 setLoadError('Failed to parse reviews file');
                 setIsLoading(false);
               }
             });
           } catch (error) {
-            console.error('❌ Failed to fetch data from GitHub:', error);
+            console.error('? Failed to fetch data from GitHub:', error);
             setLoadError(`Failed to load data from GitHub: ${error.message}`);
             setIsLoading(false);
           }
@@ -644,25 +644,25 @@ If you see "CSV is not found or CSV is empty" error:
 
       // Processing and cleaning data with store master mapping
       const processAndCleanData = (rawData, storesMasterData = []) => {
-        console.log('🔄 Processing reviews data. Raw records:', rawData.length);
-        console.log('🏪 Store master records:', storesMasterData.length);
+        console.log('?? Processing reviews data. Raw records:', rawData.length);
+        console.log('?? Store master records:', storesMasterData.length);
         
         if (!rawData || rawData.length === 0) {
-          console.error('❌ No raw data to process!');
+          console.error('? No raw data to process!');
           return [];
         }
         
         // Log actual column names from reviews
         const firstRow = rawData[0];
-        console.log('📋 Review columns:', Object.keys(firstRow));
+        console.log('?? Review columns:', Object.keys(firstRow));
         
         // Build store master lookup by store name/code
         const storeMasterLookup = {};
         
-        console.log('🔍 Building store lookup from', storesMasterData.length, 'stores...');
+        console.log('?? Building store lookup from', storesMasterData.length, 'stores...');
         
         // Create lookup map - Store Code from reviews matches Store Name in store master
-        console.log('🏗️ Building store master lookup from', storesMasterData.length, 'stores...');
+        console.log('??? Building store master lookup from', storesMasterData.length, 'stores...');
         
         storesMasterData.forEach((store, idx) => {
           // Extract Store Name which acts as the key matching Store Code in reviews
@@ -682,7 +682,7 @@ If you see "CSV is not found or CSV is empty" error:
             };
             
             if (idx === 0) {
-              console.log('🔍 First store master record:');
+              console.log('?? First store master record:');
               console.log('   Store Name (raw):', store['Store Name']);
               console.log('   Store Name (processed):', storeName);
               console.log('   Lookup key:', nameKey);
@@ -691,8 +691,8 @@ If you see "CSV is not found or CSV is empty" error:
           }
         });
         
-        console.log('✅ Store lookup created:', Object.keys(storeMasterLookup).length, 'stores');
-        console.log('📝 Sample lookup keys:', Object.keys(storeMasterLookup).slice(0, 10));
+        console.log('? Store lookup created:', Object.keys(storeMasterLookup).length, 'stores');
+        console.log('?? Sample lookup keys:', Object.keys(storeMasterLookup).slice(0, 10));
         
         // Helper to detect improvement categories from comment text
         const detectCategory = (text) => {
@@ -756,7 +756,7 @@ If you see "CSV is not found or CSV is empty" error:
           }
           
           if (idx === 0) {
-            console.log(`📦 Row 0 lookup:`);
+            console.log(`?? Row 0 lookup:`);
             console.log(`   storeCode (input): "${storeCode}"`);
             console.log(`   storeCodeKey (lookup key): "${storeCodeKey}"`);
             console.log(`   Found in lookup: ${!!storeDetails}`);
@@ -767,7 +767,7 @@ If you see "CSV is not found or CSV is empty" error:
           if (!storeDetails) {
             notFoundCount++;
             if (notFoundCount <= 5) {
-              console.log(`⚠️Row ${idx}: Store Code "${storeCode}" not found in store master (using defaults)`);
+              console.log(`??Row ${idx}: Store Code "${storeCode}" not found in store master (using defaults)`);
             }
           }
           
@@ -800,28 +800,28 @@ If you see "CSV is not found or CSV is empty" error:
           };
           
           if (idx === 0) {
-            console.log(`📦 Row ${idx} ENRICHED ROW:`);
+            console.log(`?? Row ${idx} ENRICHED ROW:`);
             console.log(`   "Store Code" field: "${processedRow["Store Code"]}"`);
             console.log(`   "City" field: "${processedRow["City"]}"`);
             console.log(`   Full row keys:`, Object.keys(processedRow).slice(0, 15));
           }
           
           if (idx < 2) {
-            console.log(`📦 Row ${idx}: StoreCode="${storeCode}" → "${processedRow["Store Code"]}", City="${processedRow["City"]}"`);
+            console.log(`?? Row ${idx}: StoreCode="${storeCode}" ? "${processedRow["Store Code"]}", City="${processedRow["City"]}"`);
           }
           
           processedData.push(processedRow);
           if (storeDetails) enrichedCount++;
         });
         
-        console.log('✅ Processing complete.');
+        console.log('? Processing complete.');
         console.log(`   Valid records: ${processedData.length}`);
         console.log(`   Enriched with Store Master: ${enrichedCount}`);
         console.log(`   Store Code not found: ${notFoundCount}`);
         console.log(`   Skipped (missing data): ${skippedCount}`);
         
         if (processedData.length > 0) {
-          console.log('✅ Sample enriched row:', processedData[0]);
+          console.log('? Sample enriched row:', processedData[0]);
           console.log('   City:', processedData[0].City);
           console.log('   State:', processedData[0].State);
           console.log('   ImprovementCategory:', processedData[0].ImprovementCategory);
@@ -1087,7 +1087,7 @@ If you see "CSV is not found or CSV is empty" error:
           satisfactionKeywords.forEach(kw => {
             if (sentence.includes(kw)) {
               if (isKeywordNegated(sentence, kw)) {
-                emotionScores['Disappointment'] += 2;  // Negated positive → mild disappointment
+                emotionScores['Disappointment'] += 2;  // Negated positive ? mild disappointment
               } else {
                 emotionScores['Satisfaction'] += 3;
               }
@@ -1193,7 +1193,7 @@ If you see "CSV is not found or CSV is empty" error:
       };
 
       // Applying filters - SIMPLIFIED for safety
-      console.log('🔍 Starting filter logic. Data length:', data.length);
+      console.log('?? Starting filter logic. Data length:', data.length);
       
       const filteredData = data.length > 0 ? data.filter(row => {
         // Basic existence check
@@ -1255,15 +1255,15 @@ If you see "CSV is not found or CSV is empty" error:
       }) : [];
       
       if (data.length === 0) {
-        console.log('⏳ Data not loaded yet...');
+        console.log('? Data not loaded yet...');
       } else {
-        console.log('✅ Total data records:', data.length);
-        console.log('✅ Filtered records:', filteredData.length);
-        console.log('📋 Current Filters:', filters);
+        console.log('? Total data records:', data.length);
+        console.log('? Filtered records:', filteredData.length);
+        console.log('?? Current Filters:', filters);
       }
       
       if (filteredData.length > 0) {
-        console.log('✅ Sample filtered row:', filteredData[0]);
+        console.log('? Sample filtered row:', filteredData[0]);
       }
 
       // Compute lowest-rated zone insight
@@ -1358,24 +1358,36 @@ If you see "CSV is not found or CSV is empty" error:
       const getUniqueOptions = (key) => {
         let filteredRows = data;
 
-        // Apply Business Name filter
-        if (filters.businessName && key !== 'Business Name') {
-          filteredRows = filteredRows.filter(row => row["Business Name"] === filters.businessName);
+        // Apply Business Name filter - cascading effect
+        if (filters.businessName && filters.businessName !== '' && key !== 'Business Name') {
+          filteredRows = filteredRows.filter(row => {
+            const rowBusiness = (row["Business Name"] || '').toLowerCase().trim();
+            const filterBusiness = filters.businessName.toLowerCase().trim();
+            return rowBusiness === filterBusiness;
+          });
         }
 
-        // Apply Zone filter for State, City, Store Code, ImprovementCategory
-        if (key !== 'Zone' && key !== 'Business Name' && filters.zone.length > 0) {
-          filteredRows = filteredRows.filter(row => filters.zone.includes(row.Zone));
+        // Apply Zone filter for other dropdowns
+        if (filters.zone && filters.zone.length > 0 && key !== 'Zone' && key !== 'Business Name') {
+          filteredRows = filteredRows.filter(row => filters.zone.includes(row.Zone || row.zone || ''));
         }
 
-        // Apply State filter for City, Store Code, ImprovementCategory
-        if (key !== 'Zone' && key !== 'State' && key !== 'Business Name' && filters.state.length > 0) {
-          filteredRows = filteredRows.filter(row => filters.state.includes(row.State));
+        // Apply State filter for City, Store Code, etc.
+        if (filters.state && filters.state.length > 0 && key !== 'Zone' && key !== 'State' && key !== 'Business Name') {
+          filteredRows = filteredRows.filter(row => filters.state.includes(row.State || row.state || ''));
         }
 
-        // Apply City filter for Store Code, ImprovementCategory
-        if (key === 'Store Code' || key === 'ImprovementCategory' && filters.city.length > 0) {
-          filteredRows = filteredRows.filter(row => filters.city.includes(row.City));
+        // Apply City filter for Store Code, ImprovementCategory, etc.
+        if (filters.city && filters.city.length > 0 && key !== 'Zone' && key !== 'State' && key !== 'City' && key !== 'Business Name') {
+          filteredRows = filteredRows.filter(row => filters.city.includes(row.City || row.city || ''));
+        }
+
+        // Apply Store Code filter to cascade other filters
+        if (filters.storeCode && filters.storeCode.length > 0 && key !== 'Store Code' && key !== 'Business Name') {
+          filteredRows = filteredRows.filter(row => {
+            const rowStoreCode = (row["Store Code"] || '').toLowerCase().trim();
+            return filters.storeCode.some(code => code.toLowerCase().trim() === rowStoreCode);
+          });
         }
 
         // For Business Name, normalize case and deduplicate
@@ -1393,16 +1405,39 @@ If you see "CSV is not found or CSV is empty" error:
           return Object.values(normalizedMap).sort();
         }
 
-        // For Store Code, use store master lookup DIRECTLY - this is the source of truth
+        // For Store Code, use store master lookup but filtered by brand/zone/city
         if (key === 'Store Code') {
-          // Get all store codes from store master lookup
-          const storeCodesFromMaster = Object.keys(storeMasterLookupRef.current || {})
+          // Start with all store codes from master
+          let storeCodesFromMaster = Object.keys(storeMasterLookupRef.current || {})
             .filter(code => code && code !== 'UNKNOWN')
             .sort();
           
-          console.log(`🏪 Store Code filter: returning ${storeCodesFromMaster.length} codes from store master lookup`);
+          // If brand is selected, only show stores carrying that brand
+          if (filters.businessName && filters.businessName !== '') {
+            storeCodesFromMaster = storeCodesFromMaster.filter(code => {
+              const storeData = filteredRows.find(row => (row["Store Code"] || '').toLowerCase().trim() === code.toLowerCase().trim());
+              if (!storeData) return false;
+              const rowBusiness = (storeData["Business Name"] || '').toLowerCase().trim();
+              const filterBusiness = filters.businessName.toLowerCase().trim();
+              return rowBusiness === filterBusiness;
+            });
+          }
           
+          console.log(`📊 Store Code filter: returning ${storeCodesFromMaster.length} codes (filtered by brand: ${filters.businessName})`);
           return storeCodesFromMaster;
+        }
+
+        // For Zone, City, State - return options based on filtered data
+        if (key === 'Zone') {
+          return [...new Set(filteredRows.map(row => row.Zone || row.zone || '').filter(val => val))].sort();
+        }
+
+        if (key === 'State') {
+          return [...new Set(filteredRows.map(row => row.State || row.state || '').filter(val => val))].sort();
+        }
+
+        if (key === 'City') {
+          return [...new Set(filteredRows.map(row => row.City || row.city || '').filter(val => val))].sort();
         }
 
         return [...new Set(filteredRows.map(row => row[key]).filter(val => val))].sort();
@@ -1412,20 +1447,20 @@ If you see "CSV is not found or CSV is empty" error:
       const totalReviews = filteredData.length;
       
       // Debug: Check actual data state
-      console.log('🔍 DATA STATE CHECK:');
+      console.log('?? DATA STATE CHECK:');
       console.log('  data array length:', data.length);
       console.log('  filteredData length:', filteredData.length);
       console.log('  filters:', filters);
       
       if (totalReviews === 0 && data.length > 0) {
-        console.warn('⚠️WARNING: Data loaded (', data.length, 'rows) but filteredData is empty!');
+        console.warn('??WARNING: Data loaded (', data.length, 'rows) but filteredData is empty!');
         console.log('First raw data row:', data[0]);
       }
       
       const negativeReviews = filteredData.filter(row => row.Sentiment === 'NEGATIVE').length;
       const percentNegative = totalReviews > 0 ? ((negativeReviews / totalReviews) * 100).toFixed(1) : 0;
       
-      console.log('📊 Dashboard Metrics:');
+      console.log('?? Dashboard Metrics:');
       console.log('  Total Filtered Reviews:', totalReviews);
       console.log('  Negative Reviews:', negativeReviews);
       console.log('  % Negative:', percentNegative);
@@ -1907,23 +1942,29 @@ If you see "CSV is not found or CSV is empty" error:
           </g>
         );
       };
-
       // Rendering the dashboard
       return (
-        <div className="container mx-auto p-4">
-          {/* Dashboard Heading */}
-          <h1 className="text-3xl font-semibold text-gray-800 mb-4">Voice of Customers Dashboard</h1>
+        <div className="border-4 border-gray-200 rounded-lg p-6 bg-white">
+          <div className="container mx-auto">
+            {/* Dashboard Heading */}
+            <div className="bg-gradient-to-b from-slate-900 to-slate-800 text-white p-8 rounded-lg mb-8 shadow-2xl border-l-8 border-amber-500">
+              <h1 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">Voice of Customers Dashboard</h1>
+              <div className="grid grid-cols-3 gap-6">
+                <div className="bg-white/10 backdrop-blur p-4 rounded-lg border border-white/20">
+                  <span className="text-gray-300 text-sm font-semibold">MIN REVIEW DATE</span>
+                  <p className="text-2xl font-bold text-amber-400 mt-2">{data.length > 0 ? new Date(Math.min(...data.map(d => new Date(d['Comment Date_NEW'])))).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'}) : 'N/A'}</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur p-4 rounded-lg border border-white/20">
+                  <span className="text-gray-300 text-sm font-semibold">MAX REVIEW DATE</span>
+                  <p className="text-2xl font-bold text-amber-400 mt-2">{data.length > 0 ? new Date(Math.max(...data.map(d => new Date(d['Comment Date_NEW'])))).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'}) : 'N/A'}</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur p-4 rounded-lg border border-white/20">
+                  <span className="text-gray-300 text-sm font-semibold">TOTAL RECORDS</span>
+                  <p className="text-2xl font-bold text-amber-400 mt-2">{data.length.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
           
-          {/* Data Source Banner */}
-          <div className="bg-blue-50 border-l-4 border-blue-500 p-3 mb-4 rounded">
-            <p className="text-sm text-blue-800">
-              <strong>Data Source:</strong> GitHub ({GITHUB_CONFIG.username}/{GITHUB_CONFIG.repo}/{GITHUB_CONFIG.branch})
-              {isLoading && ' • Loading...'}
-              {loadError && ` • ✅ ${loadError}`}
-              {!isLoading && !loadError && data.length > 0 && ` • ✅ Loaded ${data.length} records`}
-            </p>
-          </div>
-
           {/* Loading State */}
           {isLoading && (
             <div className="flex justify-center items-center py-12">
@@ -1932,9 +1973,9 @@ If you see "CSV is not found or CSV is empty" error:
                 <p className="text-gray-600">Loading data from GitHub...</p>
                 {mlSentimentStatus !== 'not-started' && (
                   <div className="mt-4 text-sm">
-                    {mlSentimentStatus === 'analyzing' && <p className="text-blue-600">🤖 Analyzing sentiment with ML model...</p>}
-                    {mlSentimentStatus === 'completed' && <p className="text-green-600">✅ ML sentiment analysis complete</p>}
-                    {mlSentimentStatus === 'unavailable' && <p className="text-amber-600">⚠️ ML API unavailable - using original sentiment</p>}
+                    {mlSentimentStatus === 'analyzing' && <p className="text-blue-600">?? Analyzing sentiment with ML model...</p>}
+                    {mlSentimentStatus === 'completed' && <p className="text-green-600">? ML sentiment analysis complete</p>}
+                    {mlSentimentStatus === 'unavailable' && <p className="text-amber-600">?? ML API unavailable - using original sentiment</p>}
                   </div>
                 )}
               </div>
@@ -2286,7 +2327,7 @@ If you see "CSV is not found or CSV is empty" error:
                   {/* Zone Sentiment Dip */}
                   <div className="insight-card bg-red-50 p-4 rounded-lg shadow-sm">
                     <div className="flex items-center mb-2">
-                      <span className="text-xl mr-2 text-red-600">⬇</span>
+                      <span className="text-xl mr-2 text-red-600">📉</span>
                       <h3 className="text-lg font-bold text-gray-800">{lowestZoneInsight.zone} Sentiment Dip</h3>
                     </div>
                     <p className="text-sm text-gray-600">
@@ -2297,18 +2338,18 @@ If you see "CSV is not found or CSV is empty" error:
                   {/* Underperforming Stores */}
                   <div className="insight-card bg-yellow-50 p-4 rounded-lg shadow-sm">
                     <div className="flex items-center mb-2">
-                      <span className="text-xl mr-2">⚠️</span>
+                      <span className="text-xl mr-2">⚠️</span>
                       <h3 className="text-lg font-bold text-gray-800">Stores Needing Urgent Attention</h3>
                     </div>
                     <p className="text-sm text-gray-600">
-                      {lowRatedStores} store{lowRatedStores !== 1 ? 's' : ''} rated ≤3.6 demand immediate intervention. Store Experience is key issue.
+                      {lowRatedStores} store{lowRatedStores !== 1 ? 's' : ''} rated =3.6 demand immediate intervention. Store Experience is key issue.
                     </p>
                   </div>
 
                   {/* Positive Momentum */}
                   <div className="insight-card bg-green-50 p-4 rounded-lg shadow-sm">
                     <div className="flex items-center mb-2">
-                      <span className="text-xl mr-2 text-green-600">⬆</span>
+                      <span className="text-xl mr-2 text-green-600">📈</span>
                       <h3 className="text-lg font-bold text-gray-800">Positive Feedback Surge</h3>
                     </div>
                     <p className="text-sm text-gray-600">
@@ -2319,7 +2360,7 @@ If you see "CSV is not found or CSV is empty" error:
                   {/* High Review Volume Cities */}
                   <div className="insight-card bg-blue-50 p-4 rounded-lg shadow-sm">
                     <div className="flex items-center mb-2">
-                      <span className="text-xl mr-2">📋</span>
+                      <span className="text-xl mr-2">🎯</span>
                       <h3 className="text-lg font-bold text-gray-800">Priority Cities</h3>
                     </div>
                     <p className="text-sm text-gray-600">
@@ -2334,7 +2375,7 @@ If you see "CSV is not found or CSV is empty" error:
                       <h3 className="text-lg font-bold text-gray-800">Leading Store Performance</h3>
                     </div>
                     <p className="text-sm text-gray-600">
-                      Store {bestStoreInfo} and its regional cluster lead on service –” potential model for scaling excellence.
+                      Store {bestStoreInfo} and its regional cluster lead on service 🚀 potential model for scaling excellence.
                     </p>
                   </div>
                 </div>
@@ -2346,7 +2387,7 @@ If you see "CSV is not found or CSV is empty" error:
                 {showSubDrivers && selectedKeyDriver === 'Store Experience' ? (
                   <>
                     <div className="flex items-center justify-between mb-4">
-                      <h2 className="chart-title">📍 Store Experience Sub-Drivers</h2>
+                      <h2 className="chart-title">?? Store Experience Sub-Drivers</h2>
                       <button
                         onClick={() => {
                           setShowSubDrivers(false);
@@ -2354,7 +2395,7 @@ If you see "CSV is not found or CSV is empty" error:
                         }}
                         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-semibold"
                       >
-                        ← Back to Key Drivers
+                        ? Back to Key Drivers
                       </button>
                     </div>
                     <ResponsiveContainer width="100%" height={300}>
@@ -2575,9 +2616,9 @@ If you see "CSV is not found or CSV is empty" error:
                               const cell = row[cat] || { count: 0, sentiment: 'NONE' };
                               const bgColor = COLORS[cell.sentiment];
                               const textColor = cell.sentiment === 'NONE' ? '#000' : '#fff';
-                              const indicator = cell.sentiment === 'POSITIVE' ? '❤' :
+                              const indicator = cell.sentiment === 'POSITIVE' ? '👍' :
                                         cell.sentiment === 'NEGATIVE' ? '💔' :
-                                        cell.sentiment === 'NEUTRAL' ? '💭' : '';
+                                        cell.sentiment === 'NEUTRAL' ? '➖' : '';
                               const indicatorStyle = cell.sentiment === 'NEGATIVE' ? { 
                                 color: '#fff'
                               } : {};
@@ -2646,7 +2687,7 @@ If you see "CSV is not found or CSV is empty" error:
               {/* Row 5: Comments Viewer */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h2 className="chart-title">Positive Comments (Top 15) –“ By Date</h2>
+                  <h2 className="chart-title">😊 Positive Comments (Top 15) By Date</h2>
                   <div className="max-h-96 overflow-y-auto">
                     {filteredData
                       .filter(row => row.Sentiment === 'POSITIVE')
@@ -2654,16 +2695,18 @@ If you see "CSV is not found or CSV is empty" error:
                       .slice(0, 15)
                       .map((row, index) => (
                         <div key={index} className="comment-card">
-                          <p className="font-bold">😊{row["Customer Response"]}</p>
+                          <p className="font-bold">😊 {row["Customer Response"]}</p>
                           <p className="comment-details">
-                            Store: {row["Store Code"]} | Category: {row["ImprovementCategory"]}{row["SubDriver"] ? ` → ${row["SubDriver"]}` : ''} | Date: {new Date(row["Comment Date_NEW"]).toLocaleDateString('en-US')}
+                            Store: {row["Store Code"]} | Category: {row["ImprovementCategory"]}{row["SubDriver"] ? ` → ${row["SubDriver"]}` : ''}
+                            <br/>
+                            📅 <strong>{row["Comment Date_NEW"] ? new Date(row["Comment Date_NEW"]).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'}) : 'N/A'}</strong>
                           </p>
                         </div>
                       ))}
                   </div>
                 </div>
                 <div>
-                  <h2 className="chart-title">Negative Comments (Top 15) –“ By Date</h2>
+                  <h2 className="chart-title">😠 Negative Comments (Top 15) By Date</h2>
                   <div className="max-h-96 overflow-y-auto">
                     {filteredData
                       .filter(row => row.Sentiment === 'NEGATIVE')
@@ -2671,7 +2714,7 @@ If you see "CSV is not found or CSV is empty" error:
                       .slice(0, 15)
                       .map((row, index) => (
                         <div key={index} className="comment-card">
-                          <p className="font-bold">😠 {row["Customer Response"]}</p>
+                          <p className="font-bold">😠 {row["Customer Response"]}</p>
                           <p className="comment-details">
                             Store: {row["Store Code"]} | Category: {row["ImprovementCategory"]}{row["SubDriver"] ? ` → ${row["SubDriver"]}` : ''} <br/>
                             📅 <strong>{row["Comment Date_NEW"] ? new Date(row["Comment Date_NEW"]).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'}) : 'N/A'}</strong>
@@ -2706,7 +2749,7 @@ If you see "CSV is not found or CSV is empty" error:
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="text-lg font-bold text-gray-800">
-                      🔍 All Sentiment Keywords & Phrases
+                      📊 All Sentiment Keywords & Phrases
                     </h3>
                     <p className="text-sm text-gray-600 mt-1">
                       <strong>Sub-Driver:</strong> {keywordPopup.subDriver}
@@ -2714,9 +2757,10 @@ If you see "CSV is not found or CSV is empty" error:
                   </div>
                   <button
                     onClick={() => setKeywordPopup(null)}
-                    className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                    className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 w-8 h-8 flex items-center justify-center rounded text-2xl font-bold"
+                    title="Close"
                   >
-                    ×
+                    ✕
                   </button>
                 </div>
                 
@@ -2765,7 +2809,7 @@ If you see "CSV is not found or CSV is empty" error:
                 {/* Neutral Keywords */}
                 {keywordPopup.keywords.neutral && (
                   <div className="mb-4">
-                    <h4 className="text-amber-700 font-bold mb-2">⭕ Neutral Keywords & Phrases ({keywordPopup.keywords.neutral.reviewCount} reviews)</h4>
+                    <h4 className="text-amber-700 font-bold mb-2">⚪ Neutral Keywords & Phrases ({keywordPopup.keywords.neutral.reviewCount} reviews)</h4>
                     <div className="bg-amber-50 p-3 rounded flex flex-wrap gap-2 border border-amber-200">
                       {keywordPopup.keywords.neutral.keywords && keywordPopup.keywords.neutral.keywords.length > 0 ? (
                         keywordPopup.keywords.neutral.keywords.map((keyword, idx) => (
@@ -2792,6 +2836,7 @@ If you see "CSV is not found or CSV is empty" error:
               </div>
             </div>
           )}
+          </div>
         </div>
       );
     }
@@ -2802,5 +2847,7 @@ If you see "CSV is not found or CSV is empty" error:
   </script>
 </body>
 </html>
+
+
 
 
