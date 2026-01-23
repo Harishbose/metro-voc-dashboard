@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.backup
+*.original
+*.tmp
+
+# Backup folders (don't upload these)
+BACKUPS/
+METRO_VOC_DASHBOARD_COPY/
+old_backups/
+
+# Python environment
+env/
+ENV/
+.env
+
+# Cache
+.cache/
+*.cache
