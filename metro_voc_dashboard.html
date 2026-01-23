@@ -2654,9 +2654,10 @@ If you see "CSV is not found or CSV is empty" error:
                       .slice(0, 15)
                       .map((row, index) => (
                         <div key={index} className="comment-card">
-                          <p className="font-bold">😊{row["Customer Response"]}</p>
+                          <p className="font-bold">😊 {row["Customer Response"]}</p>
                           <p className="comment-details">
-                            Store: {row["Store Code"]} | Category: {row["ImprovementCategory"]}{row["SubDriver"] ? ` → ${row["SubDriver"]}` : ''} | Date: {new Date(row["Comment Date_NEW"]).toLocaleDateString('en-US')}
+                            Store: {row["Store Code"]} | Category: {row["ImprovementCategory"]}{row["SubDriver"] ? ` → ${row["SubDriver"]}` : ''}<br/>
+                            📅 <strong>{row["Comment Date_NEW"] ? new Date(row["Comment Date_NEW"]).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'}) : 'N/A'}</strong>
                           </p>
                         </div>
                       ))}
