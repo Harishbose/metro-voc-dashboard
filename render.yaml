@@ -3,4 +3,5 @@ services:
     name: metro-voc-dashboard
     runtime: python
     buildCommand: "pip install -r requirements.txt"
+    startCommand: "python -m http.server $PORT"
     port: 8000
