@@ -2,6 +2,5 @@ services:
   - type: web
     name: metro-voc-dashboard
     runtime: python
-    buildCommand: "echo 'Dashboard ready'"
-    startCommand: "python -m http.server 8000"
+    buildCommand: "pip install -r requirements.txt"
     port: 8000
