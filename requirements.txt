@@ -1,0 +1,3 @@
+# Metro VOC Dashboard - Static File Server
+# No external dependencies needed
+# Python 3 built-in http.server is used to serve static files
