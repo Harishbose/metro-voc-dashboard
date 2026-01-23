@@ -2,10 +2,9 @@ services:
   - type: web
     name: metro-voc-dashboard
     runtime: python
+    pythonVersion: 3.11
     buildCommand: "pip install -r requirements.txt"
-    healthCheckPath: /
     startCommand: "python -m http.server 8000"
-    port: 8000
     envVars:
       - key: PYTHONUNBUFFERED
         value: "1"
