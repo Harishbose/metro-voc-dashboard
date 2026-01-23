@@ -1648,7 +1648,7 @@ If you see "CSV is not found or CSV is empty" error:
           negative: ['busy', 'crowd', 'delay', 'long wait', 'slow', 'slow service', 'wait', 'waiting', 'crowded'],
           neutral: ['line', 'service time']
         },
-        'Billing, Payment & Transaction Experience': {
+        'Billing, Payment & Transaction': {
           positive: ['smooth billing', 'easy payment', 'quick checkout'],
           negative: ['billing', 'billing mistake', 'charge', 'payment failed', 'wrong billing', 'overcharge', 'incorrect billing'],
           neutral: ['invoice', 'payment', 'receipt', 'transaction']
@@ -2654,10 +2654,9 @@ If you see "CSV is not found or CSV is empty" error:
                       .slice(0, 15)
                       .map((row, index) => (
                         <div key={index} className="comment-card">
-                          <p className="font-bold">😊 {row["Customer Response"]}</p>
+                          <p className="font-bold">😊{row["Customer Response"]}</p>
                           <p className="comment-details">
-                            Store: {row["Store Code"]} | Category: {row["ImprovementCategory"]}{row["SubDriver"] ? ` → ${row["SubDriver"]}` : ''}<br/>
-                            📅 <strong>{row["Comment Date_NEW"] ? new Date(row["Comment Date_NEW"]).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'}) : 'N/A'}</strong>
+                            Store: {row["Store Code"]} | Category: {row["ImprovementCategory"]}{row["SubDriver"] ? ` → ${row["SubDriver"]}` : ''} | Date: {new Date(row["Comment Date_NEW"]).toLocaleDateString('en-US')}
                           </p>
                         </div>
                       ))}
@@ -2672,9 +2671,10 @@ If you see "CSV is not found or CSV is empty" error:
                       .slice(0, 15)
                       .map((row, index) => (
                         <div key={index} className="comment-card">
-                          <p className="font-bold">📊­ {row["Customer Response"]}</p>
+                          <p className="font-bold">😠 {row["Customer Response"]}</p>
                           <p className="comment-details">
-                            Store: {row["Store Code"]} | Category: {row["ImprovementCategory"]}{row["SubDriver"] ? ` → ${row["SubDriver"]}` : ''} | Date: {new Date(row["Comment Date_NEW"]).toLocaleDateString('en-US')}
+                            Store: {row["Store Code"]} | Category: {row["ImprovementCategory"]}{row["SubDriver"] ? ` → ${row["SubDriver"]}` : ''} <br/>
+                            📅 <strong>{row["Comment Date_NEW"] ? new Date(row["Comment Date_NEW"]).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'}) : 'N/A'}</strong>
                           </p>
                         </div>
                       ))}
